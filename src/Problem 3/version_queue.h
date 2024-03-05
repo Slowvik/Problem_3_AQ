@@ -41,7 +41,7 @@ class version_queue
         //Current Max Size of queue:
         int current_max_size;
 
-        //Helper struct:
+        //Helper object:
         version_details* version;
 
         //Current Version:
@@ -90,8 +90,8 @@ class underflow : public std::exception
 };
 
 
-template <class T>
 //Default constructor override:
+template <class T>
 version_queue<T>::version_queue()
 {
     q = new T[INITIAL_SIZE];
@@ -118,7 +118,7 @@ version_queue<T>::version_queue(int s)
     version[0].end = 0;
 }
 
-//TODO: Copy assignment
+//Copy assignment
 template <class T>
 version_queue<T>& version_queue<T>::operator=(version_queue<T>& other)
 {
@@ -132,7 +132,7 @@ version_queue<T>& version_queue<T>::operator=(version_queue<T>& other)
 }
 
 
-//TODO: Copy constructor
+//Copy constructor
 template <class T>
 version_queue<T>::version_queue(version_queue<T>& other)
 {
