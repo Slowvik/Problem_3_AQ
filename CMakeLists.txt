@@ -1,4 +1,4 @@
-set (CMAKE_GENERATOR "NMake Makefiles" CACHE INTERNAL "" FORCE)
+#set (CMAKE_GENERATOR "NMake Makefiles" CACHE INTERNAL "" FORCE)
 cmake_minimum_required(VERSION 3.16.3)
 
 project(version_queue)
