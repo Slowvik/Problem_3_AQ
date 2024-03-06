@@ -16,4 +16,4 @@ Features of the version queue:
 7. The main.cpp file contains sample operations performed and timed using the system clock. 
 
 Known Issues
-> If the version_queue is declared within a scope (inside main), allocation/resizing fails at around ~50,000 elements. To navigate around this, it is advised to declare the version_queue OUTSIDE the scope as a global variable (if large queue sizes are required)
+> If the version_queue is declared within a scope (inside main), allocation/resizing fails at around ~50,000 elements. To navigate around this, it is advised to declare the version_queue OUTSIDE the scope as a global variable (if large queue sizes are required). Currently successfully tested with upto 10,000,000 integers in global scope.
