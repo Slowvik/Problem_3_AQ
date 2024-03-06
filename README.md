@@ -13,7 +13,10 @@ Features of the version queue:
 4. The version_queue has been templated so that it can work with different primitive types. Storing objects in it will further require overloading several operators (such as >, ==, etc).
 5. The version_queue has been equipped with several functions that are commonly found in similar STL containers, such as front(), back(), size(), etc.
 6. Iterator support for version_queue is not available currently. It can be implemented using a helper struct if required, for closer resemblance to an STL container or for use with STL algorithms.
-7. The main.cpp file contains sample operations performed and timed using the system clock. 
+7. The main.cpp file contains sample operations performed and timed using the system clock.
+
+Enqueue and Dequeue times:
+1. Sample enqueue and dequeue operations involving 1,000,000 elements each are timed using the system clock. For 1,000,000 operations, the total time taken for either operation is of the order of ~1 ms. 
 
 Known Issues
 > If the version_queue is declared within a scope (inside main), allocation/resizing fails at around ~50,000 elements. To navigate around this, it is advised to declare the version_queue OUTSIDE the scope as a global variable (if large queue sizes are required). Currently successfully tested with upto 10,000,000 integers in global scope.
