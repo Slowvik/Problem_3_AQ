@@ -3,11 +3,13 @@
 #include <exception>
 #include <chrono>
 
+//Parameterised Construcor
+version_queue<int> v(100000);
+
 int main()
 {
-    //Parameterised Construcor
-    version_queue<int> v(40000);
-    int test_size = 40000;
+    
+    int test_size = 100000;
 
     /*
     This section tests the time taken to perform 40,000 enqueue operations in milliseconds
@@ -91,6 +93,9 @@ int main()
                 break;
             case 5:
                 std::cout<<"Current size of queue is: "<<v.size()<<std::endl;
+                break;
+            case 6:
+                std::cout<<"Closing user interface"<<std::endl;
                 break;
             default:
                 std::cout<<"Invalid choice!"<<std::endl;
