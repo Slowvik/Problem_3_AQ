@@ -20,7 +20,7 @@ int main()
         v.enqueue(i);
     }
     auto endTime = std::chrono::high_resolution_clock::now(); 
-    std::cout<<"Time taken for enqueing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
+    std::cout<<"\nTime taken for enqueing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     /*
     This section tests the time taken to perform 40,000 dequeue operations in milliseconds
@@ -32,17 +32,18 @@ int main()
         deqd = v.dequeue();
     }
     endTime = std::chrono::high_resolution_clock::now();
-    std::cout<<"Time taken for dequeing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
+    std::cout<<"\nTime taken for dequeing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
-    //Copy constructors:
+    //Copy constructor:
     version_queue<int> v2(v);
     
 
     //Sample print function:
-    std::cout<<"Sample print function at version# 1000: "<<std::endl;
+    std::cout<<"\nSample print function at version# 1000: "<<std::endl;
     v.print(1000);
+    std::cout<<"\n";
 
-    //new queue to work with user input:
+    //new queue to work with user input (default ctor):
     version_queue<int> v3;
 
     int option = 1;
@@ -54,6 +55,7 @@ int main()
     /*
     This section can take user input to perform different operations on the queue
     */
+    std::cout<<"\nNew queue used for the next section: \n"<<std::endl;
     while(option!=6)
     {
         std::cout<<"Enter your choice:\n";
@@ -68,7 +70,7 @@ int main()
         switch (option)
         {
             case 1:
-                std::cout<<"Enter a number to enqueue"<<std::endl;
+                std::cout<<"\n\nEnter a number to enqueue"<<std::endl;
                 std::cin>>input;
                 v3.enqueue(input);
                 break;
@@ -83,30 +85,30 @@ int main()
                     std::cout<<uf.what();
                     break;
                 }
-                std::cout<<"First element deqeueued, the element is: "<<output<<std::endl;
+                std::cout<<"\nFirst element deqeueued, the element is: "<<output<<std::endl;
                 break;
 
             case 3:
-                std::cout<<"Enter a version number: "<<std::endl;
+                std::cout<<"\nEnter a version number: "<<std::endl;
                 std::cin>>ver;
                 v3.print(ver);
                 break;
             case 4:
-                std::cout<<"Current version number is: "<<v3.getVersion()<<std::endl;
+                std::cout<<"\nCurrent version number is: "<<v3.getVersion()<<std::endl;
                 break;
             case 5:
-                std::cout<<"Current size of queue is: "<<v3.size()<<std::endl;
+                std::cout<<"\nCurrent size of queue is: "<<v3.size()<<std::endl;
                 break;
             case 6:
-                std::cout<<"Closing user interface"<<std::endl;
+                std::cout<<"\nClosing user interface"<<std::endl;
                 break;
             default:
-                std::cout<<"Invalid choice!"<<std::endl;
+                std::cout<<"\nInvalid choice!"<<std::endl;
                 break;
         }
     }
 
-    std::cout<<"Closing..."<<std::endl;
+    std::cout<<"Closing tester"<<std::endl;
     system("PAUSE");
     return 0;
 }
