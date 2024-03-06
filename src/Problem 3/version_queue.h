@@ -7,9 +7,6 @@
 Assumptions:
 > Version number is an integer. That is what it looks like from the question, it makes the mapping of version number to start/end indices much easier 
 > Currently, not designed to work with std::iterator. If required, can implement a helper iterator class for functions such as .begin(), .end(), as well as the ability to use this data structure with STL algorithms
-
-Known Issues:
-> Fails to allocate memory for queue size larger than ~50,000 OR if queue needs to be resized to something greater than 10,000. Can potentially be solved with malloc.
 */
 
 
