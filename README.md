@@ -1,9 +1,10 @@
 Steps to run the code:
 
 1. git clone https://github.com/Slowvik/Problem_3_AQ
-2. There is already a unix makefile present in /build, but a fresh executable(/makefile) can be generated as follows:
+2. There is already a unix makefile present in /build, but a fresh executable(/makefile) can be generated as follows: (NOTE: NEW MAKEFILES ARE NO LONGER UPLOADED. Only CMakeLists will be updated)
 3. On windows: "cmake .." will create Visual Studio solution files by default. I prefer compiling with the command line: "g++ main.cpp -o outfile"
 4. On Linux: "cmake .." followed by "make" will create an executable called version_queue_tester (as specified in the CMakeLists.txt file)
+5. Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 with g++12.2.0
 
 Features of the version queue:
 1. It is assumed that version numbers are integers, as shown in the question. Floating point/strings will require further features.
@@ -15,4 +16,4 @@ Features of the version queue:
 7. The main.cpp file contains sample operations performed and timed using the system clock. 
 
 Known Issues
-> Dynamic reallocation of memory during resizing operations can sometimes cause the program to crash if the new required size is greater than the size of the program on the call stack. This can be navigated by initialising the version_queue with a large size. However, sizes of ~50,000 still causes the program to crash. Further investigation and possible use of malloc() is required if we want to work with 100,000 or more entries. 
+> If the version_queue is declared within a scope (inside main), allocation/resizing fails at around ~50,000 elements. To navigate around this, it is advised to declare the version_queue OUTSIDE the scope as a global variable (if large queue sizes are required)
