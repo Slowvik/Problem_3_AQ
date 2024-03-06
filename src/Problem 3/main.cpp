@@ -36,11 +36,14 @@ int main()
 
     //Copy constructors:
     version_queue<int> v2(v);
-    version_queue<int> v3 = v;
+    
 
     //Sample print function:
     std::cout<<"Sample print function at version# 1000: "<<std::endl;
     v.print(1000);
+
+    //new queue to work with user input:
+    version_queue<int> v3;
 
     int option = 1;
     float input = 0;
@@ -67,13 +70,13 @@ int main()
             case 1:
                 std::cout<<"Enter a number to enqueue"<<std::endl;
                 std::cin>>input;
-                v.enqueue(input);
+                v3.enqueue(input);
                 break;
 
             case 2:
                 try
                 {
-                    output = v.dequeue();
+                    output = v3.dequeue();
                 }
                 catch(underflow uf)
                 {
@@ -86,13 +89,13 @@ int main()
             case 3:
                 std::cout<<"Enter a version number: "<<std::endl;
                 std::cin>>ver;
-                v.print(ver);
+                v3.print(ver);
                 break;
             case 4:
-                std::cout<<"Current version number is: "<<v.getVersion()<<std::endl;
+                std::cout<<"Current version number is: "<<v3.getVersion()<<std::endl;
                 break;
             case 5:
-                std::cout<<"Current size of queue is: "<<v.size()<<std::endl;
+                std::cout<<"Current size of queue is: "<<v3.size()<<std::endl;
                 break;
             case 6:
                 std::cout<<"Closing user interface"<<std::endl;
@@ -104,5 +107,6 @@ int main()
     }
 
     std::cout<<"Closing..."<<std::endl;
+    system("PAUSE");
     return 0;
 }
