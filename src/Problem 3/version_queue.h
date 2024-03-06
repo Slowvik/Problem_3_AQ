@@ -7,6 +7,7 @@
 Assumptions:
 > Version number is an integer. That is what it looks like from the question, it makes the mapping of version number to start/end indices much easier 
 > Currently, not designed to work with std::iterator. If required, can implement a helper iterator class for functions such as .begin(), .end(), as well as the ability to use this data structure with STL algorithms
+> Initialiser list is currently not supported, because logically, enqueue operations should be sequential. ORder matters.
 */
 
 
@@ -17,7 +18,7 @@ Assumptions:
 #include <cstring>
 
 //Define the initial size:
-#define INITIAL_SIZE 20000
+#define INITIAL_SIZE 20000 //Safe initial size in case a version_queue is initialised on the stack. Please use the parameterised constructor if you are declaring it outside the scope.
 
 
 
@@ -104,7 +105,7 @@ version_queue<T>::version_queue()
     version[0].end = 0;
 }
 
-//Parameterised constructor
+//Parameterised constructor, parameter is the size
 template <class T>
 version_queue<T>::version_queue(int s)
 {
