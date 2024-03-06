@@ -16,7 +16,7 @@ Features of the version queue:
 7. The main.cpp file contains sample operations performed and timed using the system clock.
 
 Enqueue and Dequeue times:
-1. Sample enqueue and dequeue operations involving 1,000,000 elements each are timed using the system clock. For 1,000,000 operations, the total time taken for either operation is of the order of ~10 ms. This increases lineraly as the number of operations increases, suggesting that it is O(N). This is expected since we are using a basic C++ array as the base container, and iterating over a continuous array taken O(N) time.
+1. Sample enqueue and dequeue operations involving 1,000,000 elements each are timed using the system clock. For 1,000,000 operations, the total time taken for either operation is of the order of ~10 ms. This increases lineraly as the number of operations increases, suggesting that it is O(N). This is expected since we are using a basic C++ array as the base container, and iterating over a continuous array takes O(N) time.
 
 Known Issues
 > If the version_queue is declared within a scope (inside main), allocation/resizing fails at around ~50,000 elements. To navigate around this, it is advised to declare the version_queue OUTSIDE the scope as a global variable (if large queue sizes are required). Currently successfully tested with upto 10,000,000 integers in global scope.
