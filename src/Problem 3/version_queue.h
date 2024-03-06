@@ -66,6 +66,9 @@ class version_queue
         //Copy constructor
         version_queue(version_queue& other);
 
+        //Destructor:
+        ~version_queue();
+
         //Enqueue(push):
         void enqueue(T f);
 
@@ -143,6 +146,13 @@ version_queue<T>::version_queue(version_queue<T>& other)
     this->current_version = other.current_version;
     this->begin = other.begin;
     this->end = other.end;
+}
+
+template <class T>
+version_queue<T>::~version_queue()
+{
+    delete[] q;
+    delete[] version;
 }
 
 
