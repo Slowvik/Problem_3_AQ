@@ -4,12 +4,12 @@
 #include <chrono>
 
 //Parameterised Construcor
-version_queue<int> v(100000);
+version_queue<int> v(10000000);
 
 int main()
 {
     
-    int test_size = 100000;
+    int test_size = 10000000;
 
     /*
     This section tests the time taken to perform 40,000 enqueue operations in milliseconds
