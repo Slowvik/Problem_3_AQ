@@ -16,4 +16,4 @@ Features of the version queue:
 7. The main.cpp file contains sample operations performed and timed using the system clock. 
 
 Known Issues
-> Dynamic reallocation of memory during resizing operations can sometimes cause the program to crash if the new required size is greater than the size of the program on the call stack. This can be navigated by initialising the version_queue with a large size. However, sizes of ~50,000 still causes the program to crash. Further investigation and possible use of malloc() is required if we want to work with 100,000 or more entries. 
+> Dynamic reallocation of memory during resizing operations can sometimes cause the program to crash if the new required size is greater than the size of the program on the call stack. This can be navigated by initialising the version_queue with a large size. However, sizes of ~50,000 still causes the program to crash. Further investigation and possible use of malloc() is required if we want to work with 100,000 or more entries. This was originally tested on a system with 16Gb of RAM 
