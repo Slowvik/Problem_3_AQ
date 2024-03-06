@@ -1,7 +1,7 @@
 Steps to run the code:
 
 1. git clone https://github.com/Slowvik/Problem_3_AQ
-2. There is already a unix makefile present in /build, but a fresh executable(/makefile) can be generated as follows:
+2. There is already a unix makefile present in /build, but a fresh executable(/makefile) can be generated as follows: (NOTE: NEW MAKEFILES ARE NO LONGER UPLOADED. Only CMakeLists will be updated)
 3. On windows: "cmake .." will create Visual Studio solution files by default. I prefer compiling with the command line: "g++ main.cpp -o outfile"
 4. On Linux: "cmake .." followed by "make" will create an executable called version_queue_tester (as specified in the CMakeLists.txt file)
 
