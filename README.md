@@ -1,10 +1,10 @@
 Steps to run the code:
-
+> Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 with g++12.2.0. Minimumm C++ version required: C++11.
 1. git clone https://github.com/Slowvik/Problem_3_AQ
 2. There is already a unix makefile present in /build, but a fresh executable(/makefile) can be generated as follows: (NOTE: NEW MAKEFILES ARE NO LONGER UPLOADED. Only CMakeLists will be updated)
 3. On windows: "cmake .." will create Visual Studio solution files by default. I prefer compiling with the command line: "g++ main.cpp -o outfile"
 4. On Linux: "cmake .." followed by "make" will create an executable called version_queue_tester (as specified in the CMakeLists.txt file)
-5. Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 with g++12.2.0. Minimumm C++ version required: C++11.
+5. Note: If you want to include it in a project, simply copying over version_queue.h to your project folder works.
 
 Features of the version queue:
 1. It is assumed that version numbers are integers, as shown in the question. Floating point/strings will require further features.
