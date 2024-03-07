@@ -12,7 +12,7 @@ int main()
     int test_size = 10000000;
 
     /*
-    This section tests the time taken to perform 40,000 enqueue operations in milliseconds
+    This section tests the time taken to perform 10,000,000 enqueue operations in milliseconds
     */
     auto startTime = std::chrono::high_resolution_clock::now();
     for(int i = 0; i<test_size; i++)
@@ -23,7 +23,7 @@ int main()
     std::cout<<"\nTime taken for enqueing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     /*
-    This section tests the time taken to perform 40,000 dequeue operations in milliseconds
+    This section tests the time taken to perform 10,000,000 dequeue operations in milliseconds
     */
     int deqd = 0;
     startTime = std::chrono::high_resolution_clock::now();
