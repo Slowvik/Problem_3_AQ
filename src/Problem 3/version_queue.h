@@ -7,7 +7,7 @@
 Assumptions:
 > Version number is an integer. That is what it looks like from the question, it makes the mapping of version number to start/end indices much easier 
 > Currently, not designed to work with std::iterator. If required, can implement a helper iterator class for functions such as .begin(), .end(), as well as the ability to use this data structure with STL algorithms
-> Initialiser list is currently not supported, because logically, enqueue operations should be sequential. ORder matters.
+> Initialiser list is currently not supported, because logically, enqueue operations should be sequential. Order matters.
 */
 
 
@@ -18,8 +18,8 @@ Assumptions:
 #include <cstring>
 
 //Define the initial size:
-#define INITIAL_SIZE 20000 //Safe initial size in case a version_queue is initialised on the stack. Please use the parameterised constructor if you are declaring it outside the scope.
-
+#define INITIAL_SIZE 20000 
+#define RESCALE_FACTOR 2 //1.5 might be better for some applications
 
 
 template <class T>
@@ -36,33 +36,33 @@ class version_queue
         //Actual container:
         T* q;
 
-        //Current Max Size of queue:
-        int current_max_size;
-
         //Helper object:
-        version_details* version;
+        version_details* version;       
+
+        //Current Max Size of queue:
+        size_t current_max_size;        
 
         //Current Version:
         int current_version;
 
-        //Pointers to begin and end for current version
+        //Pointers to front and back for current version
         int begin;
         int end;
 
-        void resize(int new_size=2*INITIAL_SIZE);       
+        void resize(size_t new_size=RESCALE_FACTOR*INITIAL_SIZE);       
 
     public:
         //Default constructor override:
         explicit version_queue();
 
         //Parameterised constructor:
-        explicit version_queue(int s);
+        explicit version_queue(size_t s);
 
         //Copy assignment operator
         version_queue& operator=(version_queue& v);
 
         //Copy constructor
-        version_queue(version_queue& other);
+        explicit version_queue(version_queue& other);
 
         //Destructor:
         ~version_queue();
@@ -87,7 +87,7 @@ class version_queue
 class underflow : public std::exception 
 {
     public:
-    char* what ();
+        char* what ();
 };
 
 
@@ -95,28 +95,28 @@ class underflow : public std::exception
 template <class T>
 version_queue<T>::version_queue()
 {
-    q = new T[INITIAL_SIZE];
-    version = new version_details[2*INITIAL_SIZE];
-    current_max_size = INITIAL_SIZE;
-    current_version = 0;
-    begin = 0;
-    end = 0;
-    version[0].begin = 0;
-    version[0].end = 0;
+    this->q = new T[INITIAL_SIZE];
+    this->version = new version_details[2*INITIAL_SIZE];
+    this->current_max_size = INITIAL_SIZE;
+    this->current_version = 0;
+    this->begin = 0;
+    this->end = 0;
+    this->version[0].begin = 0;
+    this->version[0].end = 0;
 }
 
 //Parameterised constructor, parameter is the size
 template <class T>
-version_queue<T>::version_queue(int s)
+version_queue<T>::version_queue(size_t s)
 {
-    q = new T[s];    
-    version = new version_details[2*s];
-    current_version = 0;
-    current_max_size = s;
-    begin = 0;
-    end = 0;
-    version[0].begin = 0;
-    version[0].end = 0;
+    this->q = new T[s];    
+    this->version = new version_details[2*s];
+    this->current_version = 0;
+    this->current_max_size = s;
+    this->begin = 0;
+    this->end = 0;
+    this->version[0].begin = 0;
+    this->version[0].end = 0;
 }
 
 //Copy assignment
@@ -155,24 +155,13 @@ version_queue<T>::~version_queue()
 
 
 template <class T>
-void version_queue<T>::resize(int size)
+void version_queue<T>::resize(size_t new_size)
 {
-    //std::cout<<"resizing..."<<std::endl;
-    //Copy the main container
-    //T* new_q = new T[size];    
-
-    q = (T*)realloc(q, size*sizeof(T));
-    
-    //Copy the helper container
-    //version_details* new_versions = new version_details[2*size];
-    version = (version_details*)realloc(version, 2*size*sizeof(version_details));
+    q = (T*)realloc(q, new_size*sizeof(T));    
+    version = (version_details*)realloc(version, 2*new_size*sizeof(version_details));
    
-    current_max_size = size;
-    // delete [] q;
-    // q = new_q;
+    current_max_size = new_size;
 
-    // delete [] version;
-    // version = new_versions;
     std::cout<<"resized to "<<current_max_size<<std::endl;
 }
 
@@ -180,15 +169,15 @@ void version_queue<T>::resize(int size)
 template <class T>
 void version_queue<T>::enqueue(T f)
 {
-    if(end>=current_max_size)
+    if(end+1 == current_max_size)
     {
-        resize(2*current_max_size);
+        resize(RESCALE_FACTOR*current_max_size);
     }
 
     //Add the element to the end:
     q[end] = f;
 
-    this->current_version += 1;
+    current_version += 1;
     version[current_version].begin = begin;
     version[current_version].end = end+1;
 
@@ -201,10 +190,9 @@ T version_queue<T>::dequeue()
 {
     if(begin<end)
     {
-        T dequeued = q[begin];
-        
+        T dequeued = front();        
 
-        this->current_version +=1;
+        current_version +=1;
         version[current_version].begin = begin+1;
         version[current_version].end = end;
 
@@ -288,7 +276,7 @@ T version_queue<T>::back()
 template <class T>
 bool version_queue<T>::empty()
 {
-    if(begin-end == 0)
+    if(size() == 0)
     {
         return true;
     }
@@ -300,8 +288,8 @@ bool version_queue<T>::empty()
 
 char* underflow::what() 
 {
-    char* ret = new char[35];
-    strcpy(ret, "Memory underflow, invalid address\n");
+    char* ret = new char[40];
+    strcpy(ret, "Memory underflow, no elements in queue\n");
     return ret;
 }
 
