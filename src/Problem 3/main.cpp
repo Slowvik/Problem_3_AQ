@@ -3,18 +3,18 @@
 #include <exception>
 #include <chrono>
 
-#define TEST_SIZE 10000000
+#define TEST_SIZE 10000000 //10 million
 
-//Parameterised Construcor
-//version_queue<int> v(10000000);
+
 
 int main()
 {
     version_queue<int> v;
-    //int TEST_SIZE = 10000000;
-
+    //Parameterised Construcor
+    //version_queue<int> v(10000000);  
+    
     /*
-    This section tests the time taken to perform 10,000,000 enqueue operations in milliseconds
+    This section tests the time taken to perform TEST_SIZE enqueue operations in milliseconds
     */
     auto startTime = std::chrono::high_resolution_clock::now();
     for(int i = 0; i<TEST_SIZE; i++)
@@ -25,7 +25,7 @@ int main()
     std::cout<<"\nTime taken for enqueing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     /*
-    This section tests the time taken to perform 10,000,000 dequeue operations in milliseconds
+    This section tests the time taken to perform TEST_SIZE dequeue operations in milliseconds
     */
     int deqd = 0;
     startTime = std::chrono::high_resolution_clock::now();
@@ -37,8 +37,7 @@ int main()
     std::cout<<"\nTime taken for dequeing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     //Copy constructor:
-    version_queue<int> v2(v);
-    
+    version_queue<int> v2(v);    
 
     //Sample print function:
     // std::cout<<"\nSample print function at version# 1000: "<<std::endl;
