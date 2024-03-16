@@ -159,19 +159,20 @@ void version_queue<T>::resize(int size)
 {
     //std::cout<<"resizing..."<<std::endl;
     //Copy the main container
-    T* new_q = new T[size];
-    memcpy(new_q, q, size*sizeof(T));
+    //T* new_q = new T[size];    
+
+    q = (T*)realloc(q, size*sizeof(T));
     
     //Copy the helper container
-    version_details* new_versions = new version_details[2*size];
-    memcpy(new_versions, version, 2*size*sizeof(version_details));
+    //version_details* new_versions = new version_details[2*size];
+    version = (version_details*)realloc(version, 2*size*sizeof(version_details));
    
     current_max_size = size;
-    delete [] q;
-    q = new_q;
+    // delete [] q;
+    // q = new_q;
 
-    delete [] version;
-    version = new_versions;
+    // delete [] version;
+    // version = new_versions;
     std::cout<<"resized to "<<current_max_size<<std::endl;
 }
 

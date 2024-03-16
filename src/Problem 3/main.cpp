@@ -3,45 +3,47 @@
 #include <exception>
 #include <chrono>
 
+#define TEST_SIZE 10000000
+
 //Parameterised Construcor
-version_queue<int> v(10000000);
+//version_queue<int> v(10000000);
 
 int main()
 {
-    
-    int test_size = 10000000;
+    version_queue<int> v;
+    //int TEST_SIZE = 10000000;
 
     /*
     This section tests the time taken to perform 40,000 enqueue operations in milliseconds
     */
     auto startTime = std::chrono::high_resolution_clock::now();
-    for(int i = 0; i<test_size; i++)
+    for(int i = 0; i<TEST_SIZE; i++)
     {
         v.enqueue(i);
     }
     auto endTime = std::chrono::high_resolution_clock::now(); 
-    std::cout<<"\nTime taken for enqueing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
+    std::cout<<"\nTime taken for enqueing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     /*
     This section tests the time taken to perform 40,000 dequeue operations in milliseconds
     */
     int deqd = 0;
     startTime = std::chrono::high_resolution_clock::now();
-    for(int i = 0; i<test_size; i++)
+    for(int i = 0; i<TEST_SIZE; i++)
     {
         deqd = v.dequeue();
     }
     endTime = std::chrono::high_resolution_clock::now();
-    std::cout<<"\nTime taken for dequeing "<<test_size<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
+    std::cout<<"\nTime taken for dequeing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     //Copy constructor:
     version_queue<int> v2(v);
     
 
     //Sample print function:
-    std::cout<<"\nSample print function at version# 1000: "<<std::endl;
-    v.print(1000);
-    std::cout<<"\n";
+    // std::cout<<"\nSample print function at version# 1000: "<<std::endl;
+    // v.print(1000);
+    // std::cout<<"\n";
 
     //new queue to work with user input (default ctor):
     version_queue<int> v3;
