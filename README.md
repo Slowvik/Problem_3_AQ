@@ -1,4 +1,4 @@
-Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 with g++12.2.0. Minimumm C++ version required: C++11.
+Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 with g++12.2.0. Minimum C++ version required: C++11.
 
 Steps to run the code:
 1. git clone https://github.com/Slowvik/Problem_3_AQ. Or simply download the version_queue.h header and use it in your code. main.cpp contains some sample operations on the queue.
