@@ -162,7 +162,7 @@ void version_queue<T>::resize(size_t new_size)
    
     current_max_size = new_size;
 
-    std::cout<<"resized to "<<current_max_size<<std::endl;
+    //std::cout<<"resized to "<<current_max_size<<std::endl;
 }
 
 //Enqueue(push):
