@@ -2,6 +2,7 @@ Project was originally written in VSCode 1.87.0, compiled and run on Windows 10 
 
 Steps to run the code:
 1. git clone https://github.com/Slowvik/Problem_3_AQ. Or simply download the version_queue.h header and use it in your code. main.cpp contains some sample operations on the queue.
+2. On windows, simply compile with g++ main.cpp -o main
 
 Features of the version queue:
 1. It is assumed that VERSION NUMBERS are integers, as shown in the question. Floating point/strings will require further code.
