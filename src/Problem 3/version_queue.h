@@ -1,12 +1,12 @@
 /*
-> Normal queue - single ended - push at back, pop from front
+> Normal queue - single end_indexed - push at back, pop from front
 > Version number - with each push AND pop, version number(int) is incremented
-> Corresponding to a particular version number, we need a start and an end. We are going to use an array of objects that store this.
+> Corresponding to a particular version number, we need a start and an end_index. We are going to use an array of objects that store this.
 > NO STL CONTAINERS/ALGORITHMS: No queues, vectors, maps or even pairs used.
 
 Assumptions:
 > Version number is an integer. That is what it looks like from the question, it makes the mapping of version number to start/end indices much easier 
-> Currently, not designed to work with std::iterator. If required, can implement a helper iterator class for functions such as .begin(), .end(), as well as the ability to use this data structure with STL algorithms
+> Currently, not designed to work with std::iterator. If required, can implement a helper iterator struct for functions such as .front(), .back(), as well as the ability to use this data structure with STL algorithms
 > Initialiser list is currently not supported, because logically, enqueue operations should be sequential. Order matters.
 */
 
@@ -17,8 +17,8 @@ Assumptions:
 #include <exception>
 #include <cstring>
 
-//Define the initial size:
-#define INITIAL_SIZE 20000 
+//Define the constants:
+#define INITIAL_SIZE 4096 //Power of 2
 #define RESCALE_FACTOR 2 //1.5 might be better for some applications
 
 
@@ -29,8 +29,8 @@ class version_queue
         //Helper struct:
         struct version_details
         {
-            int begin;
-            int end;
+            int start_index;
+            int end_index;
         };
 
         //Actual container:
@@ -46,8 +46,8 @@ class version_queue
         int current_version;
 
         //Pointers to front and back for current version
-        int begin;
-        int end;
+        int start_index;
+        int end_index;
 
         void resize(size_t new_size=RESCALE_FACTOR*INITIAL_SIZE);       
 
@@ -68,20 +68,20 @@ class version_queue
         ~version_queue();
 
         //Enqueue(push):
-        void enqueue(T f);
+        void enqueue(const T& f);
 
         //Dequeue(pop)
         T dequeue();
 
         //Print(version): Prints the state of the queue for a particular version:
-        void print(int version_number);
+        const void print(int version_number);
 
         //Some helper functions (similar to what STL containers have):
-        int getVersion();
-        int size();
-        T front();
-        T back();
-        bool empty();
+        const int getVersion();
+        const int size();
+        const T& front();
+        const T& back();
+        const bool empty();
 };
 
 class underflow : public std::exception 
@@ -99,10 +99,10 @@ version_queue<T>::version_queue()
     this->version = new version_details[2*INITIAL_SIZE];
     this->current_max_size = INITIAL_SIZE;
     this->current_version = 0;
-    this->begin = 0;
-    this->end = 0;
-    this->version[0].begin = 0;
-    this->version[0].end = 0;
+    this->start_index = 0;
+    this->end_index = 0;
+    this->version[0].start_index = 0;
+    this->version[0].end_index = 0;
 }
 
 //Parameterised constructor, parameter is the size
@@ -113,10 +113,10 @@ version_queue<T>::version_queue(size_t s)
     this->version = new version_details[2*s];
     this->current_version = 0;
     this->current_max_size = s;
-    this->begin = 0;
-    this->end = 0;
-    this->version[0].begin = 0;
-    this->version[0].end = 0;
+    this->start_index = 0;
+    this->end_index = 0;
+    this->version[0].start_index = 0;
+    this->version[0].end_index = 0;
 }
 
 //Copy assignment
@@ -128,8 +128,8 @@ version_queue<T>& version_queue<T>::operator=(version_queue<T>& other)
     this->version = other.version;
     this->current_max_size = other.current_max_size;
     this->current_version = other.version;
-    this->begin = other.begin;
-    this->end = other.end;
+    this->start_index = other.start_index;
+    this->end_index = other.end_index;
 }
 
 
@@ -142,8 +142,8 @@ version_queue<T>::version_queue(version_queue<T>& other)
     this->version = other.version;
     this->current_max_size = other.current_max_size;
     this->current_version = other.current_version;
-    this->begin = other.begin;
-    this->end = other.end;
+    this->start_index = other.start_index;
+    this->end_index = other.end_index;
 }
 
 template <class T>
@@ -167,36 +167,36 @@ void version_queue<T>::resize(size_t new_size)
 
 //Enqueue(push):
 template <class T>
-void version_queue<T>::enqueue(T f)
+void version_queue<T>::enqueue(const T& f)
 {
-    if(end+1 == current_max_size)
+    if(end_index+1 == current_max_size)
     {
         resize(RESCALE_FACTOR*current_max_size);
     }
 
     //Add the element to the end:
-    q[end] = f;
+    q[end_index] = f;
 
     current_version += 1;
-    version[current_version].begin = begin;
-    version[current_version].end = end+1;
+    version[current_version].start_index = start_index;
+    version[current_version].end_index = end_index+1;
 
-    end++;
+    end_index++;
 }
 
 //Dequeue(pop)
 template <class T>
 T version_queue<T>::dequeue() 
 {
-    if(begin<end)
+    if(start_index<end_index)
     {
         T dequeued = front();        
 
         current_version +=1;
-        version[current_version].begin = begin+1;
-        version[current_version].end = end;
+        version[current_version].start_index = start_index+1;
+        version[current_version].end_index = end_index;
 
-        begin++;
+        start_index++;
 
         return dequeued;
     }
@@ -209,14 +209,14 @@ T version_queue<T>::dequeue()
 
 //Print(version): Prints the state of the queue for a particular version:
 template <class T>
-void version_queue<T>::print(int version_number)
+const void version_queue<T>::print(int version_number)
 {
     if(version_number<=current_version && version_number>0)
     {
-        if(version[version_number].begin<version[version_number].end)
+        if(version[version_number].start_index<version[version_number].end_index)
         {
             std::cout<<"Printing in order: first entry on the left"<<std::endl;
-            for(auto i=version[version_number].begin; i<version[version_number].end; i++)
+            for(auto i=version[version_number].start_index; i<version[version_number].end_index; i++)
             {
                 std::cout<<q[i]<<" ";
             }
@@ -235,23 +235,23 @@ void version_queue<T>::print(int version_number)
 
 //Some helper functions:
 template <class T>
-int version_queue<T>::getVersion()
+const int version_queue<T>::getVersion()
 {
     return current_version;
 }
 
 template <class T>
-int version_queue<T>::size()
+const int version_queue<T>::size()
 {
-    return (end-begin);
+    return (end_index-start_index);
 }
 
 template <class T>
-T version_queue<T>::front()
+const T& version_queue<T>::front()
 {
-    if(end<current_max_size)
+    if(end_index<current_max_size)
     {
-        return q[end];
+        return q[end_index];
     }
     else
     {
@@ -261,11 +261,11 @@ T version_queue<T>::front()
 }
 
 template <class T>
-T version_queue<T>::back()
+const T& version_queue<T>::back()
 {
-    if(begin<current_max_size && begin<end)
+    if(start_index<current_max_size && start_index<end_index)
     {
-        return q[begin];
+        return q[start_index];
     }
     else
     {
@@ -274,7 +274,7 @@ T version_queue<T>::back()
     }
 }
 template <class T>
-bool version_queue<T>::empty()
+const bool version_queue<T>::empty()
 {
     if(size() == 0)
     {
