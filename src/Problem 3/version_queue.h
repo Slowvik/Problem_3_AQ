@@ -1,13 +1,12 @@
 /*
-> Normal queue - single end_indexed - push at back, pop from front
+> Normal queue - single ended - push at back, pop from front
 > Version number - with each push AND pop, version number(int) is incremented
-> Corresponding to a particular version number, we need a start and an end_index. We are going to use an array of objects that store this.
+> Corresponding to a particular version number, we need a start_index and an end_index. We are going to use an array of objects that store this.
 > NO STL CONTAINERS/ALGORITHMS: No queues, vectors, maps or even pairs used.
 
 Assumptions:
 > Version number is an integer. That is what it looks like from the question, it makes the mapping of version number to start/end indices much easier 
-> Currently, not designed to work with std::iterator. If required, can implement a helper iterator struct for functions such as .front(), .back(), as well as the ability to use this data structure with STL algorithms
-> Initialiser list is currently not supported, because logically, enqueue operations should be sequential. Order matters.
+> Initialiser list is currently not supported.
 */
 
 
