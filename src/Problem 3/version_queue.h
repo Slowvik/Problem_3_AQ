@@ -14,7 +14,7 @@ Assumptions:
 #ifndef VERSION_H_
 #define VERSION_H_
 #include <iostream>
-#include <exception>
+#include <assert.h>
 #include <cstring>
 
 //Define the constants:
@@ -52,6 +52,9 @@ class version_queue
         void resize(size_t new_size=RESCALE_FACTOR*INITIAL_SIZE);       
 
     public:
+        //a C pointer is a valid iterator
+        typedef T* iterator;
+
         //Default constructor override:
         explicit version_queue();
 
@@ -79,15 +82,14 @@ class version_queue
         //Some helper functions (similar to what STL containers have):
         const int getVersion();
         const int size();
-        const T& front();
-        const T& back();
-        const bool empty();
-};
 
-class underflow : public std::exception 
-{
-    public:
-        char* what ();
+        iterator front();
+        iterator begin();//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+
+        iterator back();
+        iterator end();//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+
+        const bool empty();
 };
 
 
@@ -161,7 +163,6 @@ void version_queue<T>::resize(size_t new_size)
     version = (version_details*)realloc(version, 2*new_size*sizeof(version_details));
    
     current_max_size = new_size;
-
     //std::cout<<"resized to "<<current_max_size<<std::endl;
 }
 
@@ -188,23 +189,17 @@ void version_queue<T>::enqueue(const T& f)
 template <class T>
 T version_queue<T>::dequeue() 
 {
-    if(start_index<end_index)
-    {
-        T dequeued = front();        
+    assert(start_index < end_index);//Check overflow
 
-        current_version +=1;
-        version[current_version].start_index = start_index+1;
-        version[current_version].end_index = end_index;
+    T dequeued = *front();        
 
-        start_index++;
+    current_version +=1;
+    version[current_version].start_index = start_index+1;
+    version[current_version].end_index = end_index;
 
-        return dequeued;
-    }
-    else
-    {
-        throw(underflow());
-        return 0;
-    }
+    start_index++;
+
+    return dequeued;
 }
 
 //Print(version): Prints the state of the queue for a particular version:
@@ -247,50 +242,41 @@ const int version_queue<T>::size()
 }
 
 template <class T>
-const T& version_queue<T>::front()
+typename version_queue<T>::iterator version_queue<T>::back()
 {
-    if(end_index<current_max_size)
-    {
-        return q[end_index];
-    }
-    else
-    {
-        throw(underflow());
-        return 0;
-    }
+    assert(end_index<current_max_size);//Check overflow
+    
+    return &q[end_index];    
 }
 
 template <class T>
-const T& version_queue<T>::back()
+typename version_queue<T>::iterator version_queue<T>::end()
 {
-    if(start_index<current_max_size && start_index<end_index)
-    {
-        return q[start_index];
-    }
-    else
-    {
-        throw(underflow());
-        return 0;
-    }
+    assert(end_index<current_max_size);//Check overflow
+    
+    return &q[end_index];    
 }
+
+template <class T>
+typename version_queue<T>::iterator version_queue<T>::front()
+{
+    assert(start_index<current_max_size && start_index<end_index);//Check underflow
+
+    return &q[start_index];    
+}
+
+template <class T>
+typename version_queue<T>::iterator version_queue<T>::begin()
+{
+    assert(start_index<current_max_size && start_index<end_index);//Check underflow
+
+    return &q[start_index];    
+}
+
 template <class T>
 const bool version_queue<T>::empty()
 {
-    if(size() == 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-char* underflow::what() 
-{
-    char* ret = new char[40];
-    strcpy(ret, "Memory underflow, no elements in queue\n");
-    return ret;
+    return end_index-start_index == 0? true:false;
 }
 
 #endif

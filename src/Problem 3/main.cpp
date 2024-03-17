@@ -1,6 +1,5 @@
 #include "version_queue.h"
 #include <iostream>
-#include <exception>
 #include <chrono>
 
 #define TEST_SIZE 10000000 //10 million
@@ -9,7 +8,9 @@
 
 int main()
 {
+    //Default constructor
     version_queue<int> v;
+
     //Parameterised Construcor
     //version_queue<int> v(10000000);  
     
@@ -24,6 +25,11 @@ int main()
     auto endTime = std::chrono::high_resolution_clock::now(); 
     std::cout<<"\nTime taken for enqueing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
+    for(auto& e:v)
+    {
+        //Possible with iterator support
+    }
+
     /*
     This section tests the time taken to perform TEST_SIZE dequeue operations in milliseconds
     */
@@ -37,11 +43,11 @@ int main()
     std::cout<<"\nTime taken for dequeing "<<TEST_SIZE<<" elements is: "<<std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count()<<" milliseconds"<<std::endl;   
 
     //Copy constructor:
-    version_queue<int> v2(v);    
+    //version_queue<int> v2(v);    
 
     //Sample print function:
     // std::cout<<"\nSample print function at version# 1000: "<<std::endl;
-    // v.print(1000);
+    // v2.print(1000);
     // std::cout<<"\n";
 
     //new queue to work with user input (default ctor):
@@ -77,16 +83,8 @@ int main()
                 break;
 
             case 2:
-                try
-                {
-                    output = v3.dequeue();
-                }
-                catch(underflow uf)
-                {
-                    std::cout<<uf.what();
-                    break;
-                }
-                std::cout<<"\nFirst element deqeueued, the element is: "<<output<<std::endl;
+                output = v3.dequeue();                
+                std::cout<<"\nFront element deqeueued, the element is: "<<output<<std::endl;
                 break;
 
             case 3:
@@ -94,15 +92,19 @@ int main()
                 std::cin>>ver;
                 v3.print(ver);
                 break;
+
             case 4:
                 std::cout<<"\nCurrent version number is: "<<v3.getVersion()<<std::endl;
                 break;
+
             case 5:
                 std::cout<<"\nCurrent size of queue is: "<<v3.size()<<std::endl;
                 break;
+
             case 6:
                 std::cout<<"\nClosing user interface"<<std::endl;
                 break;
+
             default:
                 std::cout<<"\nInvalid choice!"<<std::endl;
                 break;
