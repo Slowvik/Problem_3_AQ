@@ -83,10 +83,20 @@ class version_queue
         const int size();
 
         iterator front();
-        iterator begin();//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+
+        template<typename... Tv>
+        auto begin(Tv&&... tv) -> decltype(front(std::forward<Tv>(tv)...))//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+        {
+            return front(std::forward<Tv>(tv)...);
+        }//variadic template with perfect forwarding
 
         iterator back();
-        iterator end();//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+
+        template<typename... Tv>
+        auto end(Tv&&... tv) -> decltype(back(std::forward<Tv>(tv)...))//Same as back but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+        {
+            return back(std::forward<Tv>(tv)...);
+        }//variadic template with perfect forwarding
 
         const bool empty();
 };
@@ -249,23 +259,7 @@ typename version_queue<T>::iterator version_queue<T>::back()
 }
 
 template <class T>
-typename version_queue<T>::iterator version_queue<T>::end()
-{
-    assert(end_index<current_max_size);//Check overflow
-    
-    return &q[end_index];    
-}
-
-template <class T>
 typename version_queue<T>::iterator version_queue<T>::front()
-{
-    assert(start_index<current_max_size && start_index<end_index);//Check underflow
-
-    return &q[start_index];    
-}
-
-template <class T>
-typename version_queue<T>::iterator version_queue<T>::begin()
 {
     assert(start_index<current_max_size && start_index<end_index);//Check underflow
 
