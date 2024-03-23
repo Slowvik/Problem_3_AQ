@@ -85,18 +85,18 @@ class version_queue
 
         iterator front();
 
-        template<typename... Tv>
-        auto begin(Tv&&... tv) -> decltype(front(std::forward<Tv>(tv)...))//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+        template<typename... Ts>
+        auto begin(Ts&&... ts) -> decltype(front(std::forward<Ts>(ts)...))//Same as front but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
         {
-            return front(std::forward<Tv>(tv)...);
+            return front(std::forward<Ts>(ts)...);
         }//variadic template with perfect forwarding
 
         iterator back();
 
-        template<typename... Tv>
-        auto end(Tv&&... tv) -> decltype(back(std::forward<Tv>(tv)...))//Same as back but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
+        template<typename... Ts>
+        auto end(Ts&&... ts) -> decltype(back(std::forward<Ts>(ts)...))//Same as back but enables some c++11-17 features and algorithms that only work with a .begin() and .end() method
         {
-            return back(std::forward<Tv>(tv)...);
+            return back(std::forward<Ts>(ts)...);
         }//variadic template with perfect forwarding
 
         const bool empty();
