@@ -77,9 +77,10 @@ class version_queue
 
         //Print(version): Prints the state of the queue for a particular version:
         const void print(int version_number);
+        
+        const int getVersion();
 
         //Some helper functions (similar to what STL containers have):
-        const int getVersion();
         const int size();
 
         iterator front();
@@ -121,7 +122,7 @@ template <class T>
 version_queue<T>::version_queue(size_t s)
 {
     this->q = new T[s];    
-    this->version = new version_details[2*s];
+    this->version = new version_details[2*s];//Because we have 2 different operations that can increase version number (only one of them increases size of actual queue)
     this->current_version = 0;
     this->current_max_size = s;
     this->start_index = 0;
